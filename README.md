@@ -1,4 +1,4 @@
-# go-boilerplate
+[![Go Report Card](https://goreportcard.com/badge/github.com/joyyth/go-boilerplate)](https://goreportcard.com/report/github.com/joyyth/go-boilerplate)
 
 A minimal Go + Reactjs boilerplate. Comes with JWT auth, PostgreSQL, and a clean layered architecture — ready to build on.
 
