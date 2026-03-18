@@ -6,6 +6,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/joyyth/go-boilerplate/internal/container"
 	internal_middleware "github.com/joyyth/go-boilerplate/internal/middleware"
+	"github.com/joyyth/go-boilerplate/pkg/response"
 )
 
 func (s *Server) MountRoutes() {
@@ -30,10 +31,14 @@ func (s *Server) MountRoutes() {
 		})
 	})
 }
-
 func (s *Server) handleHealthCheck() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("ok"))
+		if err := s.db.Ping(r.Context()); err != nil {
+			s.logger.Error().Err(err).Msg("health check failed")
+			response.Error(w, http.StatusServiceUnavailable, "database unreachable")
+			return
+		}
+
+		response.Success(w, http.StatusOK, "Health check successful", nil)
 	}
 }
